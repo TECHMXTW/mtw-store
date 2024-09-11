@@ -59,11 +59,30 @@ export default async function Footer() {
           <p>
             <a href="https://github.com/vercel/commerce">View the source</a>
           </p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
+          <div className="text-sm">
+            Creado por{' '}
+            <a
+              className="text-black dark:text-white"
+              href="https://vercel.com"
+            >
+              Vercel
             </a>
-          </p>
+            . Desarrollado por{' '}
+            <a
+              className="text-black dark:text-white"
+              href="https://shopify.com"
+            >
+              Shopify
+            </a>
+            . El código fuente está{' '}
+            <a
+              className="text-black dark:text-white"
+              href="https://github.com/vercel/commerce"
+            >
+              disponible en GitHub
+            </a>
+            .
+          </div>
         </div>
       </div>
     </footer>

@@ -59,3 +59,7 @@ export async function ThreeItemGrid() {
     </section>
   );
 }
+
+<div className="mb-4">
+  <h2 className="text-2xl font-bold">Colecciones destacadas</h2>
+</div>

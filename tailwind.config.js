@@ -5,9 +5,6 @@ module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['var(--font-geist-sans)']
-      },
       keyframes: {
         fadeIn: {
           from: { opacity: 0 },
@@ -27,6 +24,15 @@ module.exports = {
         fadeIn: 'fadeIn .3s ease-in-out',
         carousel: 'marquee 60s linear infinite',
         blink: 'blink 1.4s both infinite'
+      },
+      colors: {
+        primary: 'var(--color-primary)',  // Use CSS variable for primary color
+        accent: 'var(--color-accent)'     // Use CSS variable for accent color
+      },
+      fontFamily: {
+        heading: ['var(--font-koulen)', 'sans-serif'],
+        body: ['var(--font-noto-sans-hanunoo)', 'sans-serif'],
+        sans: ['var(--font-noto-sans-hanunoo)']
       }
     }
   },

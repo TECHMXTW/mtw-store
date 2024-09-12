@@ -37,52 +37,14 @@ export default async function Footer() {
         >
           <FooterMenu menu={menu} />
         </Suspense>
-        <div className="md:ml-auto">
-          <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
-            aria-label="Deploy on Vercel"
-            href="https://vercel.com/templates/next.js/nextjs-commerce"
-          >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
-          </a>
-        </div>
       </div>
       <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
           <p>
             &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
+            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} Todos los derechos
+            reservados.
           </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
-          <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
-          </p>
-          <div className="text-sm">
-            Creado por{' '}
-            <a
-              className="text-black dark:text-white"
-              href="https://vercel.com"
-            >
-              Vercel
-            </a>
-            . Desarrollado por{' '}
-            <a
-              className="text-black dark:text-white"
-              href="https://shopify.com"
-            >
-              Shopify
-            </a>
-            . El código fuente está{' '}
-            <a
-              className="text-black dark:text-white"
-              href="https://github.com/vercel/commerce"
-            >
-              disponible en GitHub
-            </a>
-            .
-          </div>
         </div>
       </div>
     </footer>

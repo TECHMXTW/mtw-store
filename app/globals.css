@@ -19,3 +19,18 @@ input,
 button {
   @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-neutral-600 dark:focus-visible:ring-offset-neutral-900;
 }
+
+:root {
+  --color-primary: #0349F7;  /* Added primary color variable */
+  --color-accent: #E1FF04;    /* Added accent color variable */
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  body {
+    @apply font-body;
+  }
+}

@@ -6,7 +6,7 @@ export type SortFilterItem = {
 };
 
 export const defaultSort: SortFilterItem = {
-  title: 'Relevance',
+  title: 'Relevancia',
   slug: null,
   sortKey: 'RELEVANCE',
   reverse: false
@@ -14,18 +14,18 @@ export const defaultSort: SortFilterItem = {
 
 export const sorting: SortFilterItem[] = [
   defaultSort,
-  { title: 'Trending', slug: 'trending-desc', sortKey: 'BEST_SELLING', reverse: false }, // asc
-  { title: 'Latest arrivals', slug: 'latest-desc', sortKey: 'CREATED_AT', reverse: true },
-  { title: 'Price: Low to high', slug: 'price-asc', sortKey: 'PRICE', reverse: false }, // asc
-  { title: 'Price: High to low', slug: 'price-desc', sortKey: 'PRICE', reverse: true }
+  { title: 'Tendencias', slug: 'trending-desc', sortKey: 'BEST_SELLING', reverse: false }, // asc
+  { title: 'Últimas llegadas', slug: 'latest-desc', sortKey: 'CREATED_AT', reverse: true },
+  { title: 'Precio: De menor a mayor', slug: 'price-asc', sortKey: 'PRICE', reverse: false }, // asc
+  { title: 'Precio: De mayor a menor', slug: 'price-desc', sortKey: 'PRICE', reverse: true }
 ];
 
 export const TAGS = {
-  collections: 'collections',
-  products: 'products',
-  cart: 'cart'
+  collections: 'colecciones',
+  products: 'productos',
+  cart: 'carrito'
 };
 
 export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
-export const DEFAULT_OPTION = 'Default Title';
+export const DEFAULT_OPTION = 'Título Predeterminado';
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2023-01/graphql.json';

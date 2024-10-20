@@ -5,7 +5,8 @@ import Footer from 'components/layout/footer';
 export const metadata = {
   description: 'La tienda oficial del Mexico Tech Week',
   openGraph: {
-    type: 'website'
+    type: 'website',
+    url: 'https://store.mexicotechweek.com'
   }
 };
 

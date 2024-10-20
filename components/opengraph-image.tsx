@@ -6,13 +6,27 @@ export type Props = {
 };
 
 export default async function OpengraphImage(props?: Props): Promise<ImageResponse> {
-  const { title } = {
-    ...{
-      title: process.env.SITE_NAME
-    },
-    ...props
-  };
+  const { title } = props || {};
 
+  if (!title) {
+    // Return the static image for the default case
+    return new ImageResponse(
+      (
+        <img
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/default-og-image.png`}
+          alt={process.env.SITE_NAME}
+          width="1200"
+          height="630"
+        />
+      ),
+      {
+        width: 1200,
+        height: 630,
+      }
+    );
+  }
+
+  // For custom titles, generate the image dynamically
   return new ImageResponse(
     (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black">

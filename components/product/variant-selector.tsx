@@ -38,7 +38,7 @@ export function VariantSelector({
   return options.map((option) => (
     <form key={option.id}>
       <dl className="mb-8">
-        <dt className="mb-4 text-sm uppercase tracking-wide">{option.name}</dt>
+        <dt className="mb-4 text-sm uppercase tracking-wide">Talla</dt>
         <dd className="flex flex-wrap gap-3">
           {option.values.map((value) => {
             const optionNameLowerCase = option.name.toLowerCase();
@@ -70,7 +70,7 @@ export function VariantSelector({
                 key={value}
                 aria-disabled={!isAvailableForSale}
                 disabled={!isAvailableForSale}
-                title={`${option.name} ${value}${!isAvailableForSale ? ' (Out of Stock)' : ''}`}
+                title={`${option.name} ${value}${!isAvailableForSale ? ' (No disponible)' : ''}`}
                 className={clsx(
                   'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm dark:border-neutral-800 dark:bg-neutral-900',
                   {

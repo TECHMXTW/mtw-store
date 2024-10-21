@@ -22,7 +22,7 @@ function SubmitButton({
   if (!availableForSale) {
     return (
       <button disabled className={clsx(buttonClasses, disabledClasses)}>
-        Out Of Stock
+        No disponible
       </button>
     );
   }

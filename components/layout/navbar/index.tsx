@@ -12,11 +12,16 @@ const { SITE_NAME } = process.env;
 export async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
 
+  // 🔥 Filtrar Founder Mode para que nunca aparezca
+  const filteredMenu = menu.filter(
+    (item: Menu) => item.title?.toLowerCase() !== 'founder mode'
+  );
+
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
       <div className="block flex-none md:hidden">
         <Suspense fallback={null}>
-          <MobileMenu menu={menu} />
+          <MobileMenu menu={filteredMenu} />
         </Suspense>
       </div>
       <div className="flex w-full items-center">
@@ -26,14 +31,15 @@ export async function Navbar() {
             prefetch={true}
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
+            {/* 🔥 Aquí se carga tu logo desde public/logo-mxtw.svg */}
             <LogoSquare />
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
               {SITE_NAME}
             </div>
           </Link>
-          {menu.length ? (
+          {filteredMenu.length ? (
             <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item: Menu) => (
+              {filteredMenu.map((item: Menu) => (
                 <li key={item.title}>
                   <Link
                     href={item.path}

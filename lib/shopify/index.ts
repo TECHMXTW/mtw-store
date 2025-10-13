@@ -313,17 +313,14 @@ export async function getCollectionProducts({
 export async function getCollections(): Promise<Collection[]> {
   const res = await shopifyFetch<ShopifyCollectionsOperation>({
     query: getCollectionsQuery,
-    // Forzamos no-store para evitar servir colecciones cacheadas mientras limpias “Founder Mode”
+    // Evita servir colecciones cacheadas mientras limpias Founder Mode
     cache: 'no-store',
     tags: [TAGS.collections]
   });
 
   const shopifyCollections = removeEdgesAndNodes(res.body?.data?.collections);
 
-  // Reshape + filtro global:
-  // - Conserva "Todo" como entrada virtual
-  // - Excluye handles que empiezan por "hidden"
-  // - Excluye cualquier colección que contenga "founder" por título o handle
+  // Reshape + filtros:
   const visibleCollections = reshapeCollections(shopifyCollections).filter((collection) => {
     const h = (collection.handle || '').toLowerCase();
     const t = (collection.title || '').toLowerCase();
@@ -418,13 +415,27 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 export async function getProductRecommendations(productId: string): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,
+    // Fuerza datos frescos, evita “relacionados” viejos por cache
+    cache: 'no-store',
     tags: [TAGS.products],
     variables: {
       productId
     }
   });
 
-  return reshapeProducts(res.body.data.productRecommendations);
+  // Normaliza y filtra: solo vendibles y sin “founder”
+  const recs = reshapeProducts(res.body.data.productRecommendations);
+
+  return recs.filter((p) => {
+    if (!p) return false;
+
+    const isForSale = (p as any).availableForSale === true;
+    const hasFounderTag =
+      Array.isArray((p as any).tags) &&
+      (p as any).tags.some((t: string) => t?.toLowerCase().includes('founder'));
+
+    return isForSale && !hasFounderTag;
+  });
 }
 
 export async function getProducts({

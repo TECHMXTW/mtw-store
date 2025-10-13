@@ -1,40 +1,52 @@
-import { getCollectionProducts } from 'lib/shopify';
+// components/carousel.tsx
 import Link from 'next/link';
-import { GridTileImage } from './grid/tile';
+import { GridTileImage } from 'components/grid/tile';
+import { getCollectionProducts } from 'lib/shopify';
+
+const CAROUSEL_HANDLE = 'hidden-homepage-carousel';
+const HOMEPAGE_HANDLE = 'hidden-homepage-collection';
 
 export async function Carousel() {
-  // Collections that start with `hidden-*` are hidden from the search page.
-  const products = await getCollectionProducts({ collection: 'hidden-homepage-carousel' });
+  let products = await getCollectionProducts({ collection: CAROUSEL_HANDLE });
 
+  // Fallback si no hay carrusel configurado
+  if (!products?.length) {
+    products = await getCollectionProducts({ collection: HOMEPAGE_HANDLE });
+  }
   if (!products?.length) return null;
 
-  // Purposefully duplicating products to make the carousel loop and not run out of products on wide screens.
+  // Duplica para loop infinito en pantallas grandes
   const carouselProducts = [...products, ...products, ...products];
 
   return (
     <div className="w-full overflow-x-auto pb-6 pt-1">
       <ul className="flex animate-carousel gap-4">
-        {carouselProducts.map((product, i) => (
-          <li
-            key={`${product.handle}${i}`}
-            className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
-          >
-            <Link href={`/product/${product.handle}`} className="relative h-full w-full">
-              <GridTileImage
-                alt={product.title}
-                label={{
-                  title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode
-                }}
-                src={product.featuredImage?.url}
-                fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-              />
-            </Link>
-          </li>
-        ))}
+        {carouselProducts.map((product, i) => {
+          const price = product.priceRange?.maxVariantPrice;
+          return (
+            <li
+              key={`${product.handle}-${i}`}
+              className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
+            >
+              <Link href={`/product/${product.handle}`} className="relative block h-full w-full">
+                <GridTileImage
+                  alt={product.title}
+                  src={product.featuredImage?.url}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                  label={{
+                    title: product.title,
+                    amount: price?.amount || '',
+                    currencyCode: price?.currencyCode || 'MXN'
+                  }}
+                />
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 }
+
+export default Carousel;

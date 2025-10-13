@@ -1,4 +1,4 @@
-// app/page.tsx
+// app/(storefront)/page.tsx
 import HomepageHero from 'components/homepage-hero';
 import { ThreeItemGrid } from 'components/grid/three-items';
 import { Carousel } from 'components/carousel';
@@ -15,7 +15,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <HomepageHero />
+      <HomepageHero />      {/* 👈 Hero arriba */}
       <ThreeItemGrid />
       <Carousel />
       <Footer />

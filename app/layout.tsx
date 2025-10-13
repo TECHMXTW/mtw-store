@@ -15,13 +15,13 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
 const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : undefined;
 
-const koulen = Koulen({ 
+const koulen = Koulen({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-koulen',
 });
 
-const notoSansHanunoo = Noto_Sans_Hanunoo({ 
+const notoSansHanunoo = Noto_Sans_Hanunoo({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-noto-sans-hanunoo',
@@ -37,6 +37,9 @@ export const metadata = {
     follow: true,
     index: true
   },
+  icons: {
+    icon: '/favicon.png',  // 🔥 Aquí tu nuevo favicon en formato PNG
+  },
   ...(twitterCreator &&
     twitterSite && {
       twitter: {
@@ -49,7 +52,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = cookies().get('cartId')?.value;
-  const cart = getCart(cartId); // pasamos la Promise al provider
+  const cart = getCart(cartId);
 
   return (
     <html lang="es" className={`${koulen.variable} ${notoSansHanunoo.variable}`}>

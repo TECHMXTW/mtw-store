@@ -1,66 +1,71 @@
+// components/grid/three-items.tsx
 import Link from 'next/link';
-import Image from 'next/image';
-import { getCollectionProducts } from 'lib/shopify';
+import { GridTileImage } from 'components/grid/tile';
+import { getCollectionProducts, getProducts } from 'lib/shopify';
 
-/**
- * Utilidad mínima para formatear precios
- */
-function money(amount: string, currencyCode: string) {
-  const value = Number(amount);
-  try {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: currencyCode,
-      maximumFractionDigits: 0
-    }).format(value);
-  } catch {
-    return `${value} ${currencyCode}`;
-  }
-}
+const HOMEPAGE_HANDLE = 'hidden-homepage-collection';
 
 export async function ThreeItemGrid() {
-  // Ajusta la colección si lo necesitas
-  const products = await getCollectionProducts({ collection: 'hidden-homepage-featured' })
-    .then(p => p.slice(0, 3))
-    .catch(() => []);
+  // Intenta con la colección “oculta” de homepage
+  let products = await getCollectionProducts({
+    collection: HOMEPAGE_HANDLE
+  });
 
-  if (!products?.length) return null;
+  // Fallback: si la colección está vacía, toma los más recientes
+  if (!products?.length) {
+    products = await getProducts({ sortKey: 'CREATED_AT', reverse: true });
+  }
+
+  // Limita a 6 para un grid limpio
+  const visible = products.slice(0, 6);
+
+  if (!visible.length) return null;
 
   return (
-    <section className="px-4 pt-6 md:px-6 md:pt-10">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {products.map((product) => (
-          <Link
-            key={product.handle}
-            href={`/product/${product.handle}`}
-            prefetch={true}
-            className="group block"
-          >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
-              <Image
-                src={product.featuredImage?.url || ''}
-                alt={product.title}
-                fill
-                sizes="(min-width:1024px) 33vw, 100vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              />
-            </div>
+    <section className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {visible.map((product) => {
+          const price = product.priceRange?.maxVariantPrice;
+          return (
+            <li key={product.handle} className="group">
+              <Link href={`/product/${product.handle}`} className="block">
+                {/* Imagen con etiqueta flotante (pill) */}
+                <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
+                  <GridTileImage
+                    src={product.featuredImage?.url}
+                    alt={product.featuredImage?.altText || product.title}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    label={{
+                      title: product.title,
+                      amount: price?.amount || '',
+                      currencyCode: price?.currencyCode || 'MXN'
+                    }}
+                  />
+                </div>
 
-            {/* Caption: título + precio */}
-            <div className="mt-3">
-              <h3 className="text-sm font-medium leading-tight md:text-base">
-                {product.title}
-              </h3>
-              <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                {money(
-                  product.priceRange.maxVariantPrice.amount,
-                  product.priceRange.maxVariantPrice.currencyCode
-                )}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+                {/* Caption bajo la imagen */}
+                <div className="mt-2 flex items-baseline justify-between">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    {product.title}
+                  </h3>
+                  {price?.amount ? (
+                    <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                      {Number(price.amount).toLocaleString('es-MX', {
+                        style: 'currency',
+                        currency: price.currencyCode || 'MXN',
+                        maximumFractionDigits: 0
+                      })}
+                    </span>
+                  ) : null}
+                </div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
+
+export default ThreeItemGrid;

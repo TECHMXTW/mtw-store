@@ -1,19 +1,16 @@
 // components/homepage-hero.tsx
 import Image from 'next/image';
 import Link from 'next/link';
+import hero from '@/public/Banner-Principal.jpeg'; // ✅ import estático, evita rutas rotas
 
 export default function HomepageHero() {
   return (
     <section className="relative w-full">
-      {/* Contenedor con proporciones responsivas */}
       <div className="relative mx-auto w-full max-w-[1600px]">
-        {/* 
-          - En móvil usamos ratio más alto para que no se corte,
-          - En desktop extendemos a panorámico.
-        */}
-        <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] w-full">
+        {/* Altura controlada: no “empuja” demasiado la página */}
+        <div className="relative w-full aspect-[16/9] max-h-[520px] sm:max-h-[560px] md:max-h-[600px]">
           <Image
-            src="/Banner-Principal.jpeg"   // <--- tu imagen en /public
+            src={hero}
             alt="Conoce la edición limitada de merch — Mexico Tech Week 2025"
             fill
             priority
@@ -22,7 +19,7 @@ export default function HomepageHero() {
           />
         </div>
 
-        {/* CTA opcional (puedes quitar este bloque si no quieres botón) */}
+        {/* CTA opcional */}
         <div className="pointer-events-none absolute inset-0 flex items-end justify-end p-4 sm:p-8 md:p-10">
           <div className="pointer-events-auto">
             <Link

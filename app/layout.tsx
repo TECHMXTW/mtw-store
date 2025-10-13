@@ -49,11 +49,10 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = cookies().get('cartId')?.value;
-  // Don't await the fetch, pass the Promise to the context provider
-  const cart = getCart(cartId);
+  const cart = getCart(cartId); // pasamos la Promise al provider
 
   return (
-    <html lang="en" className={`${koulen.variable} ${notoSansHanunoo.variable}`}>
+    <html lang="es" className={`${koulen.variable} ${notoSansHanunoo.variable}`}>
       <body className="bg-neutral-50 text-black selection:bg-accent dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white font-body">
         <CartProvider cartPromise={cart}>
           <Navbar />

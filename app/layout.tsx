@@ -9,14 +9,18 @@ import { Toaster } from 'sonner';
 import './globals.css';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
-const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : 'http://localhost:3000';
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000';
+
+const siteName = SITE_NAME || 'Mexico Tech Week Store';
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
 const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : undefined;
 
-// 💡 cambia esta fecha si vuelves a actualizar la imagen OG para refrescar caché de los crawlers
-const OG_VERSION = '2025-10-13';
+// 👇 cambia este valor cuando quieras forzar recacheo de iconos/social
+const ASSET_VERSION = '20251013';
 
 const koulen = Koulen({
   weight: '400',
@@ -33,89 +37,54 @@ const notoSansHanunoo = Noto_Sans_Hanunoo({
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: SITE_NAME || 'Mexico Tech Week Store',
-    template: `%s | ${SITE_NAME || 'Mexico Tech Week Store'}`
+    default: siteName,
+    template: `%s | ${siteName}`
   },
   description: 'La tienda oficial del Mexico Tech Week',
   robots: {
     follow: true,
     index: true
   },
-  // 👇 Favicon
+
+  // ---------- ICONOS (WhatsApp usa mucho estos) ----------
   icons: {
-    icon: '/favicon.png'
+    icon: [
+      { url: `/favicon-32x32.png?v=${ASSET_VERSION}`, sizes: '32x32', type: 'image/png' },
+      { url: `/favicon-16x16.png?v=${ASSET_VERSION}`, sizes: '16x16', type: 'image/png' },
+      { url: `/favicon.png?v=${ASSET_VERSION}`, type: 'image/png' }
+    ],
+    apple: [
+      { url: `/apple-touch-icon.png?v=${ASSET_VERSION}`, sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: [`/favicon.png?v=${ASSET_VERSION}`]
   },
-  // 👇 Open Graph para WhatsApp / FB / IG (con cache-buster)
+
+  // ---------- OPEN GRAPH (imagen grande del preview) ----------
   openGraph: {
     type: 'website',
-    url: 'https://store.mexicotechweek.mx',
-    title: SITE_NAME || 'Mexico Tech Week Store',
+    url: 'https://store.mexicotechweek.mx/',
+    siteName: siteName,
+    title: siteName,
     description: 'La tienda oficial del Mexico Tech Week',
+    // usa URL ABSOLUTA para evitar problemas de crawlers
     images: [
       {
-        url: `/Banner-Principal.jpg?v=${OG_VERSION}`,
+        url: 'https://store.mexicotechweek.mx/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Mexico Tech Week Store'
       }
     ]
   },
-  // 👇 Twitter Card (también la usan algunas apps de mensajería)
+
+  // ---------- Twitter Card (también lo usan algunas apps) ----------
   twitter: {
     card: 'summary_large_image',
-    title: SITE_NAME || 'Mexico Tech Week Store',
+    title: siteName,
     description: 'La tienda oficial del Mexico Tech Week',
     creator: twitterCreator,
     site: twitterSite,
-    images: [`/Banner-Principal.jpg?v=${OG_VERSION}`]
-  }
-};
-
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const cartId = cookies().get('cartId')?.value;
-  const cart = getCart(cartId);
-
-  return (
-    <html lang="es" className={`${koulen.variable} ${notoSansHanunoo.variable}`}>
-      <body className="bg-neutral-50 text-black selection:bg-accent dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white font-body">
-        <CartProvider cartPromise={cart}>
-          <Navbar />
-          <main>
-            {children}
-            <Toaster closeButton />
-          </main>
-        </CartProvider>
-      </body>
-    </html>
-  );
-}
-  // 👇 Favicon PNG
-  icons: {
-    icon: '/favicon.png'
-  },
-  // 👇 Open Graph para WhatsApp / FB / IG
-  openGraph: {
-    type: 'website',
-    url: 'https://store.mexicotechweek.mx',
-    title: SITE_NAME || 'Mexico Tech Week Store',
-    description: 'La tienda oficial del Mexico Tech Week',
-    images: [
-      {
-        url: '/og-image.jpg', // coloca este archivo en /public
-        width: 1200,
-        height: 630,
-        alt: 'Mexico Tech Week Store'
-      }
-    ]
-  },
-  // 👇 Twitter Card (también la usan algunas apps de mensajería)
-  twitter: {
-    card: 'summary_large_image',
-    title: SITE_NAME || 'Mexico Tech Week Store',
-    description: 'La tienda oficial del Mexico Tech Week',
-    creator: twitterCreator,
-    site: twitterSite,
-    images: ['/og-image.png']
+    images: ['https://store.mexicotechweek.mx/og-image.jpg']
   }
 };
 

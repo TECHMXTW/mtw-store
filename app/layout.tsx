@@ -33,21 +33,39 @@ export const metadata = {
     default: SITE_NAME!,
     template: `%s | ${SITE_NAME}`
   },
+  description: 'La tienda oficial del Mexico Tech Week',
   robots: {
     follow: true,
     index: true
   },
+  // 👇 Favicon PNG
   icons: {
-    icon: '/favicon.png',  // 🔥 Aquí tu nuevo favicon en formato PNG
+    icon: '/favicon.png'
   },
-  ...(twitterCreator &&
-    twitterSite && {
-      twitter: {
-        card: 'summary_large_image',
-        creator: twitterCreator,
-        site: twitterSite
+  // 👇 Open Graph para WhatsApp / FB / IG
+  openGraph: {
+    type: 'website',
+    url: 'https://store.mexicotechweek.mx',
+    title: SITE_NAME || 'Mexico Tech Week Store',
+    description: 'La tienda oficial del Mexico Tech Week',
+    images: [
+      {
+        url: '/og-image.png', // coloca este archivo en /public
+        width: 1200,
+        height: 630,
+        alt: 'Mexico Tech Week Store'
       }
-    })
+    ]
+  },
+  // 👇 Twitter Card (también la usan algunas apps de mensajería)
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_NAME || 'Mexico Tech Week Store',
+    description: 'La tienda oficial del Mexico Tech Week',
+    creator: twitterCreator,
+    site: twitterSite,
+    images: ['/og-image.png']
+  }
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {

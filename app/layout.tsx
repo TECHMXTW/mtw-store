@@ -50,7 +50,7 @@ export const metadata = {
     description: 'La tienda oficial del Mexico Tech Week',
     images: [
       {
-        url: '/og-image.png', // coloca este archivo en /public
+        url: '/og-image.jpg', // coloca este archivo en /public
         width: 1200,
         height: 630,
         alt: 'Mexico Tech Week Store'

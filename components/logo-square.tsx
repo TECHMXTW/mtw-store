@@ -4,16 +4,13 @@ import clsx from 'clsx';
 export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   return (
     <div
-      className={clsx(
-        'flex flex-none items-center justify-center overflow-hidden',
-        {
-          'h-[40px] w-[40px] rounded-xl': !size,
-          'h-[30px] w-[30px] rounded-lg': size === 'sm'
-        }
-      )}
+      className={clsx('flex flex-none items-center justify-center', {
+        'h-[40px] w-[40px] rounded-xl': !size,
+        'h-[30px] w-[30px] rounded-lg': size === 'sm'
+      })}
     >
       <Image
-        src="/logo-mxtw.png"   // tu PNG en /public
+        src="/logo-mxtw.png"
         alt="MXTW"
         width={size === 'sm' ? 30 : 40}
         height={size === 'sm' ? 30 : 40}

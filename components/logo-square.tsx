@@ -13,7 +13,7 @@ export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
       )}
     >
       <Image
-        src="/logo-mxtw.png" // asegúrate de subir este archivo a /public
+        src="/logo-mxtw.png"   // tu PNG en /public
         alt="MXTW"
         width={size === 'sm' ? 30 : 40}
         height={size === 'sm' ? 30 : 40}

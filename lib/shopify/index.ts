@@ -144,12 +144,11 @@ const reshapeCollection = (collection: ShopifyCollection): Collection | undefine
 };
 
 const reshapeCollections = (collections: ShopifyCollection[]) => {
-  const reshapedCollections = [];
+  const reshapedCollections: Collection[] = [];
 
   for (const collection of collections) {
     if (collection) {
       const reshapedCollection = reshapeCollection(collection);
-
       if (reshapedCollection) {
         reshapedCollections.push(reshapedCollection);
       }
@@ -186,12 +185,11 @@ const reshapeProduct = (product: ShopifyProduct, filterHiddenProducts: boolean =
 };
 
 const reshapeProducts = (products: ShopifyProduct[]) => {
-  const reshapedProducts = [];
+  const reshapedProducts: Product[] = [];
 
   for (const product of products) {
     if (product) {
       const reshapedProduct = reshapeProduct(product);
-
       if (reshapedProduct) {
         reshapedProducts.push(reshapedProduct);
       }
@@ -315,9 +313,29 @@ export async function getCollectionProducts({
 export async function getCollections(): Promise<Collection[]> {
   const res = await shopifyFetch<ShopifyCollectionsOperation>({
     query: getCollectionsQuery,
+    // Forzamos no-store para evitar servir colecciones cacheadas mientras limpias “Founder Mode”
+    cache: 'no-store',
     tags: [TAGS.collections]
   });
+
   const shopifyCollections = removeEdgesAndNodes(res.body?.data?.collections);
+
+  // Reshape + filtro global:
+  // - Conserva "Todo" como entrada virtual
+  // - Excluye handles que empiezan por "hidden"
+  // - Excluye cualquier colección que contenga "founder" por título o handle
+  const visibleCollections = reshapeCollections(shopifyCollections).filter((collection) => {
+    const h = (collection.handle || '').toLowerCase();
+    const t = (collection.title || '').toLowerCase();
+    const notHidden = !h.startsWith('hidden');
+    const notFounder =
+      t !== 'founder mode' &&
+      h !== 'founder-mode' &&
+      !t.includes('founder') &&
+      !h.includes('founder');
+    return notHidden && notFounder;
+  });
+
   const collections = [
     {
       handle: '',
@@ -330,11 +348,7 @@ export async function getCollections(): Promise<Collection[]> {
       path: '/search',
       updatedAt: new Date().toISOString()
     },
-    // Filter out the `hidden` collections.
-    // Collections that start with `hidden-*` need to be hidden on the search page.
-    ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith('hidden')
-    )
+    ...visibleCollections
   ];
 
   return collections;
@@ -343,18 +357,31 @@ export async function getCollections(): Promise<Collection[]> {
 export async function getMenu(handle: string): Promise<Menu[]> {
   const res = await shopifyFetch<ShopifyMenuOperation>({
     query: getMenuQuery,
+    // Sin cache para limpiar enlaces “fantasma” del menú
+    cache: 'no-store',
     tags: [TAGS.collections],
     variables: {
       handle
     }
   });
 
-  return (
+  const items =
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
       title: item.title,
-      path: item.url.replace(domain, '').replace('/collections', '/search').replace('/pages', '')
-    })) || []
-  );
+      path: item.url
+        .replace(domain, '')
+        .replace('/collections', '/search')
+        .replace('/pages', '')
+    })) || [];
+
+  // Filtro extra por si algo con "founder" quedara en el menú
+  const filtered = items.filter((it: Menu) => {
+    const t = (it.title || '').toLowerCase();
+    const p = (it.path || '').toLowerCase();
+    return t !== 'founder mode' && !p.includes('founder') && !p.includes('founder-mode');
+  });
+
+  return filtered;
 }
 
 export async function getPage(handle: string): Promise<Page> {
@@ -452,3 +479,4 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
+}

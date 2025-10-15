@@ -4,39 +4,41 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="border-t py-10 text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="container mx-auto px-4 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-
-        {/* Bloque izquierdo: enlaces */}
-        <nav className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6">
+      <div className="container mx-auto px-4 flex flex-col items-center text-center gap-6">
+        
+        {/* Navegación */}
+        <nav className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link href="/" className="hover:text-white transition">Inicio</Link>
           <Link href="/about" className="hover:text-white transition">Sobre nosotros</Link>
           <Link href="/privacy" className="hover:text-white transition">Política de Privacidad</Link>
         </nav>
 
-        {/* Bloque derecho: texto + logo */}
-        <div className="flex flex-col items-center sm:items-end gap-3">
-          <p className="text-xs sm:text-sm">© 2023–2025 Todos los derechos reservados.</p>
-          
-          {/* Texto de colaboración */}
-          <p className="text-xs sm:text-sm text-center sm:text-right opacity-90">
-            En colaboración con&nbsp;
-            <Link
-              href="https://99minutos.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center"
-            >
-              <Image
-                src="/web.png"
-                alt="99minutos.com"
-                width={150}  // 👈 aumentamos tamaño
-                height={45}
-                className="object-contain bg-white rounded-md px-2 py-1 shadow-sm dark:bg-white"
-              />
-            </Link>
-          </p>
-        </div>
+        {/* Derechos */}
+        <p className="text-xs sm:text-sm opacity-90">
+          © 2023–2025 Todos los derechos reservados.
+        </p>
 
+        {/* Colaboración */}
+        <div className="flex flex-col items-center gap-3 mt-2">
+          <p className="text-base font-medium opacity-90">
+            En colaboración con
+          </p>
+          <Link
+            href="https://99minutos.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="99minutos.com"
+            className="flex items-center justify-center bg-white rounded-md dark:bg-white px-4 py-2 shadow-sm"
+          >
+            <Image
+              src="/web.png"
+              alt="99minutos.com"
+              width={200}   // 👈 más grande
+              height={60}
+              className="object-contain"
+            />
+          </Link>
+        </div>
       </div>
     </footer>
   );

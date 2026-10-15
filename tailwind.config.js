@@ -31,9 +31,9 @@ module.exports = {
         accent: 'var(--color-accent)'     // Use CSS variable for accent color
       },
       fontFamily: {
-        heading: ['var(--font-koulen)', 'sans-serif'],
-        body: ['var(--font-noto-sans-hanunoo)', 'sans-serif'],
-        sans: ['var(--font-noto-sans-hanunoo)']
+        heading: ['Helvetica', 'Arial', 'sans-serif'],
+        body: ['Helvetica', 'Arial', 'sans-serif'],
+        sans: ['Helvetica', 'Arial', 'sans-serif']
       }
     }
   },

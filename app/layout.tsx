@@ -2,7 +2,6 @@ import { CartProvider } from 'components/cart/cart-context';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
 import { ensureStartsWith } from 'lib/utils';
-import { Koulen, Noto_Sans_Hanunoo } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
@@ -21,18 +20,6 @@ const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : 
 
 // 👇 cambia este valor cuando quieras forzar recacheo de iconos/social
 const ASSET_VERSION = '20251013';
-
-const koulen = Koulen({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-koulen'
-});
-
-const notoSansHanunoo = Noto_Sans_Hanunoo({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-noto-sans-hanunoo'
-});
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -93,7 +80,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const cart = getCart(cartId);
 
   return (
-    <html lang="es" className={`dark ${koulen.variable} ${notoSansHanunoo.variable}`}>
+    <html lang="es" className="dark">
       <body className="bg-neutral-50 text-black selection:bg-accent dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white font-body">
         <CartProvider cartPromise={cart}>
           <Navbar />

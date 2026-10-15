@@ -1,0 +1,38 @@
+name: Upgrade storefront dependencies
+on:
+  push:
+    branches: [redesign-2026]
+    paths:
+      - '.github/workflows/upgrade-storefront.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: redesign-2026
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Upgrade Next.js and React to stable patched releases
+        run: |
+          pnpm add 'next@^15.5.9' 'react@^19.2.1' 'react-dom@^19.2.1'
+          pnpm add -D '@types/react@^19' '@types/react-dom@^19'
+      - name: Ensure lockfile matches manifest
+        run: pnpm install --frozen-lockfile
+      - name: Commit upgraded dependencies and lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json pnpm-lock.yaml
+          if ! git diff --cached --quiet; then
+            git commit -m "Upgrade Next.js and React to patched stable releases"
+            git push origin HEAD:redesign-2026
+          fi

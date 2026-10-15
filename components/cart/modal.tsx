@@ -3,6 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import LoadingDots from 'components/loading-dots';
+import EventPickupNotice from 'components/event-pickup-notice';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
@@ -196,6 +197,7 @@ export default function CartModal() {
                       />
                     </div>
                   </div>
+                  <div className="max-h-52 overflow-y-auto"><EventPickupNotice compact /></div>
                   <form action={async () => { await redirectToCheckout(); }}>
                     <CheckoutButton />
                   </form>

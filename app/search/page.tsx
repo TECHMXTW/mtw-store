@@ -11,9 +11,11 @@ export const metadata = {
 export default async function SearchPage({
   searchParams
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { sort, q: searchValue } = (searchParams || {}) as { [key: string]: string };
+  const resolvedParams = (await searchParams) ?? {};
+  const sort = typeof resolvedParams.sort === 'string' ? resolvedParams.sort : undefined;
+  const searchValue = typeof resolvedParams.q === 'string' ? resolvedParams.q : undefined;
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
 
   const products = await getProducts({ sortKey, reverse, query: searchValue });

@@ -17,7 +17,7 @@ export async function Navbar() {
   const navigation = [
     { title: 'Home', path: '/' },
     { title: 'Catalog', path: catalog?.path || '/search' },
-    { title: 'Contact', path: '/pages/contact' }
+    { title: 'Contact', path: 'https://mexicotechweek.myshopify.com/pages/contact' }
   ];
 
   return (
@@ -71,7 +71,7 @@ export async function Navbar() {
 
         {/* Dawn-inspired header actions */}
         <div className="flex items-center justify-end gap-5 md:w-auto">
-          <Link href="/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon /></Link>
+          <Link href="https://mexicotechweek.myshopify.com/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon /></Link>
           <CartModal />
         </div>
       </div>

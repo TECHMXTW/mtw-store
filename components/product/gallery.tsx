@@ -30,9 +30,12 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
           />
         )}
 
+
+      </div>
+
         {images.length > 1 ? (
-          <div className="absolute bottom-[15%] flex w-full justify-center">
-            <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur dark:border-black dark:bg-neutral-900/80">
+          <div className="mt-4 flex w-full justify-center">
+            <div className="mx-auto flex h-11 items-center rounded-full border border-neutral-300 bg-neutral-50 text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
               <button
                 formAction={() => {
                   const newState = updateImage(previousImageIndex.toString());
@@ -57,7 +60,6 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
             </div>
           </div>
         ) : null}
-      </div>
 
       {images.length > 1 ? (
         <ul className="my-12 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">

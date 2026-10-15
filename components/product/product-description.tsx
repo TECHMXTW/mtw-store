@@ -1,4 +1,5 @@
 import { AddToCart } from 'components/cart/add-to-cart';
+import EventPickupNotice from 'components/event-pickup-notice';
 import Price from 'components/price';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
@@ -24,6 +25,7 @@ export function ProductDescription({ product }: { product: Product }) {
         />
       ) : null}
       <AddToCart product={product} />
+      <EventPickupNotice />
     </>
   );
 }

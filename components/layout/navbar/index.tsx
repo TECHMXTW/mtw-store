@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
 import Search, { SearchSkeleton } from './search';
-import { UserIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, UserIcon } from '@heroicons/react/24/outline';
 
 const HEADER_LOGO =
   'https://cdn.shopify.com/s/files/1/0626/7328/9258/files/X_-_1_-_Edited.png?v=1792007401';
@@ -21,7 +21,7 @@ export async function Navbar() {
   ];
 
   return (
-    <nav className="relative flex items-center justify-between bg-black px-4 py-5 text-white lg:px-6">
+    <nav className="relative flex items-center justify-between bg-black px-4 py-5 text-white lg:px-8">
       <div className="block flex-none md:hidden">
         <Suspense fallback={null}>
           <MobileMenu menu={navigation} />
@@ -63,15 +63,16 @@ export async function Navbar() {
         </div>
 
         {/* Buscador */}
-        <div className="hidden flex-1 justify-end px-6 md:flex">
+        <div className="hidden flex-1 justify-end px-6 lg:flex">
           <Suspense fallback={<SearchSkeleton />}>
             <Search />
           </Suspense>
         </div>
 
         {/* Dawn-inspired header actions */}
+        <Link href="/search" aria-label="Buscar productos" className="mr-3 flex text-white hover:text-neutral-300 lg:hidden"><MagnifyingGlassIcon className="h-6 w-6" /></Link>
         <div className="flex items-center justify-end gap-5 md:w-auto">
-          <Link href="https://mexicotechweek.myshopify.com/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon /></Link>
+          <Link href="https://mexicotechweek.myshopify.com/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon className="h-6 w-6" /></Link>
           <CartModal />
         </div>
       </div>

@@ -20,7 +20,7 @@ export async function ThreeItemGrid() {
   if (!products?.length) return null;
 
   return (
-    <section className="mx-auto w-full max-w-[1500px] px-6 py-12 sm:px-8 lg:py-20">
+    <section className="mx-auto w-full max-w-[1200px] px-4 py-10 sm:px-6 lg:py-14">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-normal tracking-normal sm:text-3xl">Featured products</h2>
@@ -33,7 +33,7 @@ export async function ThreeItemGrid() {
         </Link>
       </div>
 
-      <ul className="grid grid-cols-2 gap-x-2 gap-y-9 sm:gap-x-6 lg:grid-cols-3">
+      <ul className="grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-3">
         {products.slice(0, 6).map((product) => {
           const price = product.priceRange?.minVariantPrice;
 

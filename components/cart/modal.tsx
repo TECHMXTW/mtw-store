@@ -196,7 +196,7 @@ export default function CartModal() {
                       />
                     </div>
                   </div>
-                  <form action={redirectToCheckout}>
+                  <form action={async () => { await redirectToCheckout(); }}>
                     <CheckoutButton />
                   </form>
                 </div>

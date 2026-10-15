@@ -15,7 +15,7 @@ export default function Footer() {
 
         {/* Derechos */}
         <p className="text-xs sm:text-sm opacity-90">
-          © 2023–2025 Todos los derechos reservados.
+          © 2026 Mexico Tech Week. Todos los derechos reservados.
         </p>
 
         {/* Colaboración */}

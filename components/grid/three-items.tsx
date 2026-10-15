@@ -1,88 +1,74 @@
-// components/grid/three-items.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCollectionProducts } from 'lib/shopify';
 
 function formatCurrency(value: string, currency: string) {
-  const number = Number(value);
-  try {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency }).format(number);
-  } catch {
-    return `${number} ${currency}`;
-  }
-}
-
-// Limpia HTML y recorta
-function toSnippet(input: string, max = 140) {
-  if (!input) return '';
-  const clean = input.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-  return clean.length > max ? `${clean.slice(0, max)}…` : clean;
+  return new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    currency: currency || 'MXN',
+    maximumFractionDigits: 2
+  }).format(Number(value));
 }
 
 export async function ThreeItemGrid() {
-  // 1) Intentar con tu colección de homepage
-  let products = await getCollectionProducts({
-    collection: 'hidden-homepage-collection'
-  });
+  let products = await getCollectionProducts({ collection: 'hidden-homepage-collection' });
 
-  // 2) Si está vacía, fall-back a “accesorios” para no dejar la home vacía
   if (!products?.length) {
     products = await getCollectionProducts({ collection: 'accesorios' });
   }
 
   if (!products?.length) return null;
 
-  const items = products.slice(0, 6);
-
   return (
-    <section className="mx-auto mb-10 mt-8 w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((product) => {
-          const price = product.priceRange?.maxVariantPrice;
-          // Fallbacks robustos: description → descriptionHtml → seo?.description → title
-          const rawDescription =
-            (product as any).description ||
-            (product as any).descriptionHtml ||
-            (product as any).seo?.description ||
-            product.title;
+    <section className="mx-auto w-full max-w-[1500px] px-4 py-12 sm:px-8 lg:py-20">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
+            Mexico Tech Week 2026
+          </p>
+          <h2 className="text-3xl font-bold uppercase tracking-tight sm:text-5xl">
+            Featured products
+          </h2>
+        </div>
+        <Link
+          href="/search"
+          className="border-b border-current pb-1 text-sm font-semibold uppercase tracking-wider hover:opacity-60"
+        >
+          Shop all
+        </Link>
+      </div>
 
-          const description = toSnippet(rawDescription, 140);
+      <ul className="grid grid-cols-2 gap-x-3 gap-y-9 sm:gap-x-6 lg:grid-cols-3">
+        {products.slice(0, 6).map((product) => {
+          const price = product.priceRange?.minVariantPrice;
 
           return (
-            <li key={product.handle} className="group">
-              <Link
-                href={`/product/${product.handle}`}
-                prefetch={true}
-                className="block overflow-hidden rounded-2xl border border-neutral-200/60 bg-white shadow-sm transition hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
-              >
-                {/* Imagen */}
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={product.featuredImage?.url || '/placeholder.png'}
-                    alt={product.featuredImage?.altText || product.title}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    className="object-cover"
-                  />
+            <li key={product.handle} className="group min-w-0">
+              <Link href={`/product/${product.handle}`} className="block">
+                <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                  {product.featuredImage?.url ? (
+                    <Image
+                      src={product.featuredImage.url}
+                      alt={product.featuredImage.altText || product.title}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 50vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs text-neutral-400">
+                      Image coming soon
+                    </div>
+                  )}
                 </div>
-
-                {/* Contenido */}
-                <div className="space-y-2 px-4 py-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <h3 className="line-clamp-1 text-base font-semibold tracking-tight">
-                      {product.title}
-                    </h3>
-                    {price ? (
-                      <span className="whitespace-nowrap rounded-full bg-blue-600/90 px-2.5 py-1 text-xs font-semibold text-white dark:bg-blue-500/90">
-                        {formatCurrency(price.amount, price.currencyCode)}
-                      </span>
-                    ) : null}
-                  </div>
-
-                  {/* Descripción corta (siempre habrá algo por el fallback) */}
-                  <p className="line-clamp-3 text-sm text-neutral-600 dark:text-neutral-300">
-                    {description}
-                  </p>
+                <div className="pt-4">
+                  <h3 className="text-sm font-semibold leading-snug sm:text-base">
+                    {product.title}
+                  </h3>
+                  {price && (
+                    <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+                      {formatCurrency(price.amount, price.currencyCode)}
+                    </p>
+                  )}
                 </div>
               </Link>
             </li>

@@ -90,7 +90,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                     ))}
                   </ul>
                 ) : null}
-                <Link href="/account" onClick={closeMobileMenu} className="mt-10 block text-base text-neutral-300">Sign in / Account</Link>
+                <Link href="https://mexicotechweek.myshopify.com/account" onClick={closeMobileMenu} className="mt-10 block text-base text-neutral-300">Sign in / Account</Link>
               </div>
             </Dialog.Panel>
           </Transition.Child>

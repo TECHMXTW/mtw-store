@@ -5,36 +5,36 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
 import Search, { SearchSkeleton } from './search';
+import { UserIcon } from '@heroicons/react/24/outline';
 
 const HEADER_LOGO =
   'https://cdn.shopify.com/s/files/1/0626/7328/9258/files/X_-_1_-_Edited.png?v=1792007401';
 
 export async function Navbar() {
-  // Trae el menú configurado en Shopify
+  // Match Dawn's visible navigation while preserving the existing Shopify catalog.
   const menu = await getMenu('next-js-frontend-header-menu');
-
-  // ❌ Oculta cualquier entrada que sea "Founder Mode" (por título o ruta)
-  const filteredMenu = (menu || []).filter((item: Menu) => {
-    const title = (item.title || '').toLowerCase();
-    const path = (item.path || '').toLowerCase();
-    return title !== 'founder mode' && !path.includes('founder') && !path.includes('founder-mode');
-  });
+  const catalog = (menu || []).find((item: Menu) => /catalog|catálogo|accesorios/i.test(item.title));
+  const navigation = [
+    { title: 'Home', path: '/' },
+    { title: 'Catalog', path: catalog?.path || '/search' },
+    { title: 'Contact', path: '/pages/contact' }
+  ];
 
   return (
-    <nav className="relative flex items-center justify-between bg-black p-4 text-white lg:px-6">
+    <nav className="relative flex items-center justify-between bg-black px-4 py-5 text-white lg:px-6">
       <div className="block flex-none md:hidden">
         <Suspense fallback={null}>
-          <MobileMenu menu={filteredMenu} />
+          <MobileMenu menu={navigation} />
         </Suspense>
       </div>
 
       <div className="flex w-full items-center">
         {/* Logo + Nombre */}
-        <div className="flex w-full md:w-1/3">
+        <div className="flex w-full items-center md:w-auto">
           <Link
             href="/"
             prefetch={true}
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+            className="mr-4 flex w-full items-center justify-center md:w-auto lg:mr-9"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -46,7 +46,7 @@ export async function Navbar() {
 
           {/* Menú principal (sin Founder Mode) */}
           {filteredMenu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
+            <ul className="hidden gap-8 text-base md:flex md:items-center">
               {filteredMenu.map((item: Menu) => (
                 <li key={`${item.title}-${item.path}`}>
                   <Link
@@ -63,14 +63,15 @@ export async function Navbar() {
         </div>
 
         {/* Buscador */}
-        <div className="hidden justify-center md:flex md:w-1/3">
+        <div className="hidden flex-1 justify-end px-6 md:flex">
           <Suspense fallback={<SearchSkeleton />}>
             <Search />
           </Suspense>
         </div>
 
-        {/* Carrito */}
-        <div className="flex justify-end md:w-1/3">
+        {/* Dawn-inspired header actions */}
+        <div className="flex items-center justify-end gap-5 md:w-auto">
+          <Link href="/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon /></Link>
           <CartModal />
         </div>
       </div>

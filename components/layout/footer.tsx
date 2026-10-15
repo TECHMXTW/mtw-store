@@ -11,6 +11,7 @@ export default function Footer() {
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
             <Link href="/about" className="hover:text-white">Sobre nosotros</Link>
             <Link href="/privacy" className="hover:text-white">Política de privacidad</Link>
+            <Link href="/envios-y-retiros" className="hover:text-white">Envíos y retiros</Link>
           </nav>
           <p className="text-xs text-neutral-500">En colaboración con <a href="https://99minutos.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">99minutos.com</a></p>
         </div>

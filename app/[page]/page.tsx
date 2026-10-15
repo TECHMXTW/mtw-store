@@ -6,9 +6,10 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({
   params
 }: {
-  params: { page: string };
+  params: Promise<{ page: string }>;
 }): Promise<Metadata> {
-  const page = await getPage(params.page);
+  const { page: pageHandle } = await params;
+  const page = await getPage(pageHandle);
   if (!page) notFound();
 
   const title = page.seo?.title || page.title || 'Página';
@@ -26,8 +27,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: { page: string } }) {
-  const page = await getPage(params.page);
+export default async function Page({ params }: { params: Promise<{ page: string }> }) {
+  const { page: pageHandle } = await params;
+  const page = await getPage(pageHandle);
   if (!page) notFound();
 
   const updated =

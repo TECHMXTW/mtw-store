@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import NewsletterForm from 'components/newsletter-form';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -12,6 +13,8 @@ export default function Footer() {
           <Link href="/about" className="hover:text-white transition">Sobre nosotros</Link>
           <Link href="/privacy" className="hover:text-white transition">Política de Privacidad</Link>
         </nav>
+
+        <NewsletterForm />
 
         {/* Derechos */}
         <p className="text-xs sm:text-sm opacity-90">

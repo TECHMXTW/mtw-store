@@ -45,9 +45,9 @@ export async function Navbar() {
           </Link>
 
           {/* Menú principal (sin Founder Mode) */}
-          {filteredMenu.length ? (
+          {navigation.length ? (
             <ul className="hidden gap-8 text-base md:flex md:items-center">
-              {filteredMenu.map((item: Menu) => (
+              {navigation.map((item: Menu) => (
                 <li key={`${item.title}-${item.path}`}>
                   <Link
                     href={item.path}

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {

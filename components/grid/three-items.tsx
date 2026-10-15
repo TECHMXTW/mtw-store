@@ -7,7 +7,7 @@ function formatCurrency(value: string, currency: string) {
     style: 'currency',
     currency: currency || 'MXN',
     maximumFractionDigits: 2
-  }).format(Number(value));
+  }).format(Number(value)).replace(/\s?MXN$/, ' MXN');
 }
 
 export async function ThreeItemGrid() {
@@ -28,17 +28,19 @@ export async function ThreeItemGrid() {
       </div>
 
       <ul className="grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-4">
-        {products.slice(0, 6).map((product) => {
+        {products.slice(0, 8).map((product) => {
           const price = product.priceRange?.minVariantPrice;
+          // Dawn's featured cards show the back/printed side when available.
+          const displayImage = product.images?.[1] || product.featuredImage;
 
           return (
             <li key={product.handle} className="group min-w-0">
               <Link href={`/product/${product.handle}`} className="block">
                 <div className="relative aspect-square w-full overflow-hidden bg-neutral-900">
-                  {product.featuredImage?.url ? (
+                  {displayImage?.url ? (
                     <Image
-                      src={product.featuredImage.url}
-                      alt={product.featuredImage.altText || product.title}
+                      src={displayImage.url}
+                      alt={displayImage.altText || product.title}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 50vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
@@ -50,7 +52,7 @@ export async function ThreeItemGrid() {
                   )}
                 </div>
                 <div className="pt-4">
-                  <h3 className="text-sm font-normal leading-snug tracking-wide sm:text-base">
+                  <h3 className="text-base font-normal leading-snug tracking-normal sm:text-lg">
                     {product.title}
                   </h3>
                   {price && (

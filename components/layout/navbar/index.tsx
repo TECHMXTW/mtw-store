@@ -4,7 +4,6 @@ import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
-import Search, { SearchSkeleton } from './search';
 import { MagnifyingGlassIcon, UserIcon } from '@heroicons/react/24/outline';
 
 const HEADER_LOGO =
@@ -21,7 +20,7 @@ export async function Navbar() {
   ];
 
   return (
-    <nav className="relative flex items-center justify-between bg-black px-4 py-5 text-white lg:px-8">
+    <nav className="relative flex items-center justify-between bg-[#121212] px-5 py-8 text-white lg:px-12 lg:py-9">
       <div className="block flex-none md:hidden">
         <Suspense fallback={null}>
           <MobileMenu menu={navigation} />
@@ -34,25 +33,25 @@ export async function Navbar() {
           <Link
             href="/"
             prefetch={true}
-            className="mr-4 flex w-full items-center justify-center md:w-auto lg:mr-9"
+            className="mr-6 flex w-full items-center justify-center md:w-auto lg:mr-10"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={HEADER_LOGO}
               alt="Mexico Tech Week — Tecnológico de Monterrey y Branddu"
-              className="h-12 w-auto max-w-[190px] object-contain sm:h-14 sm:max-w-[260px]"
+              className="h-12 w-auto max-w-[190px] object-contain sm:h-16 sm:max-w-[290px]"
             />
           </Link>
 
           {/* Menú principal (sin Founder Mode) */}
           {navigation.length ? (
-            <ul className="hidden gap-8 text-base md:flex md:items-center">
+            <ul className="hidden gap-8 text-lg md:flex md:items-center">
               {navigation.map((item: Menu) => (
                 <li key={`${item.title}-${item.path}`}>
                   <Link
                     href={item.path}
                     prefetch={true}
-                    className="text-neutral-200 underline-offset-4 hover:text-white hover:underline"
+                    className="text-neutral-300 underline-offset-4 hover:text-white hover:underline"
                   >
                     {item.title}
                   </Link>
@@ -62,16 +61,11 @@ export async function Navbar() {
           ) : null}
         </div>
 
-        {/* Buscador */}
-        <div className="hidden flex-1 justify-end px-6 lg:flex">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
-          </Suspense>
-        </div>
+        <div className="flex-1" />
 
         {/* Dawn-inspired header actions */}
-        <Link href="/search" aria-label="Buscar productos" className="mr-3 flex text-white hover:text-neutral-300 lg:hidden"><MagnifyingGlassIcon className="h-6 w-6" /></Link>
-        <div className="flex items-center justify-end gap-5 md:w-auto">
+        <Link href="/search" aria-label="Buscar productos" className="mr-6 flex text-white hover:text-neutral-300"><MagnifyingGlassIcon className="h-6 w-6" /></Link>
+        <div className="flex items-center justify-end gap-7 md:w-auto">
           <Link href="https://mexicotechweek.myshopify.com/account" aria-label="Cuenta" className="hidden text-white hover:text-neutral-300 md:block"><UserIcon className="h-6 w-6" /></Link>
           <CartModal />
         </div>
